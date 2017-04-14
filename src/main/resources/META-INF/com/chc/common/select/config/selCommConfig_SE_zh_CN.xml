@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tables>
+	<!--0部门信息 -->
+	<table ID="0" pyName="Bmxx" lgName="部门信息" asName="d" orderName="id" orderType="desc" width="650" height="400">
+		<field pyName="id" isSearch="F" type="char" isShow="F"/>
+		<field pyName="jgxx.jgbh" lgName="公司编号" isSearch="T" type="char" isShow="T" width="80"/>
+		<field pyName="jgxx.jgjc" lgName="公司简称" isSearch="T" type="char" isShow="T" width="100"/>
+		<field pyName="bmbh" lgName="部门编号" isSearch="T" type="char" isShow="T" width="80"/>
+		<field pyName="bmmc" lgName="部门名称" isSearch="T" type="char" isShow="T" width="240"/>
+		<field pyName="bmjc" lgName="部门简称" isSearch="T" type="char" isShow="T" width="80"/>
+		<field pyName="used" lgName="部门状态" isSearch="T" type="select" isShow="T" width="80" value="true:正常;false:注销"/>			    
+	</table>
+	<!--1员工信息 -->
+	<table ID="1" pyName="Ryxx" lgName="员工信息" asName="d" orderName="id" orderType="desc" width="580" height="400">
+	 	<field pyName="id" isSearch="F" type="char" isShow="F"/> 
+	 	<field pyName="bmxx.bmbh" lgName="部门编码" isSearch="F" type="char" isShow="T" width="120"/>
+		<field pyName="bmxx.bmmc" lgName="部门名称" isSearch="F" type="char" isShow="T" width="120"/>
+	 	<field pyName="rybh" lgName="人员编号" isSearch="T" type="char" isShow="T" width="120"/>
+		<field pyName="name" lgName="姓名" isSearch="T" type="char" isShow="T" width="80"/>
+		<field pyName="username" lgName="用户名" isSearch="F" type="char" isShow="T" width="120"/>
+		<field pyName="zc" lgName="职称" isSearch="T" type="char" isShow="T" width="100"/>
+		<field pyName="sex" lgName="性别" isSearch="T" type="select" isShow="T" width="30" value="0:女;1:男"/>	
+		<field pyName="email" lgName="电子邮件" isSearch="F" type="char" isShow="F"/>
+		<field pyName="employed" lgName="状态" isSearch="F" type="char" isShow="F" />		    		    		    
+	</table>
+	<!-- 2角色信息 --> 
+	<table ID="2" pyName="Role" lgName="角色信息" asName="d" orderName="id" orderType="desc" width="400" height="400">
+		<field pyName="id" isSearch="F" type="char" isShow="F" />
+		<field pyName="code" lgName="角色编号" isSearch="T" type="char" isShow="T" width="60" />		
+		<field pyName="name" lgName="角色名称" isSearch="T" type="char" isShow="T" width="150" />				 
+	</table>		   
+</tables>

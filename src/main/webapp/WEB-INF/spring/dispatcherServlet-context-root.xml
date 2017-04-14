@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"	
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop
+	    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	    http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">        
+	
+	<!-- 静态资源 -->
+	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
+	
+	<!-- 定义web资源 -->	
+	<util:properties id="webResources" location="classpath*:META-INF/webResources.properties"/>
+	
+	<!-- 解析上传文件信息  -->
+	<!-- <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		one of the properties available; the maximum file size in bytes
+		<beans:property name="defaultEncoding" value="UTF-8"></beans:property>
+		<beans:property name="maxUploadSize" value="50000000"></beans:property>
+	</beans:bean> -->
+	
+	<!-- 如果useCodeAsDefaultMessage设为true，则validation message的参数无法取到值 -->	
+	<bean class="com.yourhealth.foundation.util.ChbcReloadableResourceBundleMessageSource"
+		id="validationMessageSource" 
+		p:basenames="WEB-INF/i18n/validationMessages, classpath*:META-INF/messages/i18n/validationMessages"
+		p:fallbackToSystemLocale="false"
+		p:useCodeAsDefaultMessage="false"/>
+		
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="validationMessageSource"/>
+	</bean>
+
+	<mvc:annotation-driven  validator="validator">
+		<mvc:argument-resolvers>
+			<bean class="org.springframework.data.web.SortHandlerMethodArgumentResolver" />
+			<bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
+			</bean>
+		</mvc:argument-resolvers>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.yourhealth.foundation.util.ChbcObjectMapper"></bean>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<bean id="chbcExceptionViewPreparer" class="com.yourhealth.foundation.util.ChbcExceptionViewPreparer"/>
+	
+    <!-- 返回JSP页面 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 使用JSTL标签 -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 扫描指定包中的组件 -->
+	<context:component-scan base-package="com.yourhealth.*.controller,com.yourhealth.*.*.controller,com.yourhealth.*.*.*.controller,hello" >
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" /> 
+  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" /> 
+	</context:component-scan>		
+	
+	<!-- 不支持DELETE和PUT方法 -->
+	<!-- <mvc:view-controller path="/403" view-name="403"/> -->			
+	<mvc:view-controller path="/authException" view-name="/common/error/authException"/>
+	
+	<import resource="classpath*:META-INF/spring/servletContext-mod.xml"/> 
+				
+	<!-- 拦截器 -->
+	<!-- <mvc:interceptors>
+		国际化操作拦截器，必需配置，可以和其它国际化方式通用
+		<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		自定义拦截器，用于将session中的userBean对象保存到线程变量中，其他程序需要时直接从线程变量中得到
+		<bean id="userBeanInterceptor" class="com.chc.foundation.interceptor.UserBeanInterceptor" />
+	</mvc:interceptors> -->  		
+	
+	<!-- 指定自动搜索Bean组件、自动搜索切面类 -->
+	<!-- <context:component-scan base-package="org.crazyit.app.advice">
+		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>
+	</context:component-scan> -->
+	
+	<!-- 启动@AspectJ支持 -->	
+	<!-- <aop:aspectj-autoproxy/> -->		
+		
+</beans>

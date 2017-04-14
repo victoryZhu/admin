@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tables>
+	<!--0機構資訊 -->
+	<table ID="0" pyName="Jgxx" lgName="公司資訊" asName="d" orderName="id" orderType="desc" width="580" height="400">
+		    <field pyName="id" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="jgbh" lgName="公司編號" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="jgmc" lgName="公司名稱" isSearch="T" type="char" isShow="T" width="240"/>
+		    <field pyName="jgjc" lgName="公司簡稱" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="used" lgName="公司狀態" isSearch="T" type="select" isShow="T" width="80" value="true:正常;false:註銷"/>		    
+	</table>
+	<!--1部門資訊 -->
+	<table ID="1" pyName="Bmxx" lgName="部門資訊" asName="d" orderName="id" orderType="desc" width="650" height="400">
+		    <field pyName="id" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="jgxx.jgbh" lgName="公司編號" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="jgxx.jgjc" lgName="公司簡稱" isSearch="T" type="char" isShow="T" width="100"/>
+		    <field pyName="bmbh" lgName="部門編號" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="bmmc" lgName="部門名稱" isSearch="T" type="char" isShow="T" width="240"/>
+		    <field pyName="bmjc" lgName="部門簡稱" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="used" lgName="部門狀態" isSearch="T" type="select" isShow="T" width="80" value="true:正常;false:註銷"/>			    
+	</table>
+	<!--2員工資訊 -->
+	<table ID="2" pyName="Ryxx" lgName="員工資訊" asName="d" orderName="id" orderType="desc" width="580" height="400">
+	 		<field pyName="id" isSearch="F" type="char" isShow="F"/>		    
+	 		<field pyName="jgxx.jgjc" lgName="公司簡稱" isSearch="T" type="char" isShow="T" width="120"/>	 		
+		    <field pyName="rybh" lgName="人員編號" isSearch="T" type="char" isShow="T" width="120"/>
+		    <field pyName="name" lgName="姓名" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="zc" lgName="職稱" isSearch="T" type="char" isShow="T" width="100"/>
+		    <field pyName="level" lgName="人員級別" isSearch="T" type="select" isShow="T" width="60" value="1:一般;2:中級;3:高級"/>
+		    <field pyName="sex" lgName="性別" isSearch="T" type="select" isShow="T" width="30" value="0:女;1:男"/>			    
+		    <field pyName="idNum" lgName="證件號碼" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="dateOfBirth" lgName="出生日期" isSearch="F" type="char" isShow="F" width="120"/>
+		    <field pyName="nation" lgName="民族" isSearch="F" type="char" isShow="F" width="40"/>
+		    <field pyName="jg" lgName="籍貫" isSearch="F" type="char" isShow="F" width="120"/>
+		    <field pyName="married" lgName="婚否" isSearch="F" type="select" isShow="F" width="30" value="0:未婚;1:已婚"/>
+		    <field pyName="bloodType" lgName="血型" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="byyx" lgName="畢業院校" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="zgxl" lgName="最高學歷" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="zy" lgName="專業" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="homeTel" lgName="家庭電話" isSearch="F" type="char" isShow="F" />
+		    <field pyName="mobile" lgName="手機" isSearch="F" type="char" isShow="F" />
+		    <field pyName="email" lgName="電子郵件" isSearch="F" type="char" isShow="F"/>
+		    <field pyName="qq" lgName="qq" isSearch="F" type="char" isShow="F" />
+		    <field pyName="postcode" lgName="郵遞區號" isSearch="F" type="char" isShow="F" />
+		    <field pyName="address" lgName="地址" isSearch="F" type="char" isShow="F" />
+		    <field pyName="aihao" lgName="愛好" isSearch="F" type="char" isShow="F" />		    		    
+	</table>
+	<!--3系統使用者資訊 -->
+	<table ID="3" pyName="Xtyh" lgName="使用者資訊" asName="d" orderName="id" orderType="desc" width="580" height="400">
+		    <field pyName="id" isSearch="F" type="char" isShow="F" />
+		    <field pyName="yhm" lgName="用戶名"  isSearch="F" type="char" isShow="T" width="30"/>		    
+		    <field pyName="enabled" lgName="帳戶啟用狀態" isSearch="T" type="select" isShow="T" width="80" value="true:正常;false:註銷"/>			    
+		    <field pyName="accountNonLocked" lgName="帳戶鎖定狀態" isSearch="T" type="select" isShow="T" width="80" value="true:正常;false:鎖定"/>
+		    <field pyName="zcTime" lgName="註冊時間" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="slTime" lgName="受理時間" isSearch="T" type="char" isShow="T" width="80"/>		    
+	</table>
+	<!--4系統資訊 -->
+	<table ID="4" pyName="System" lgName="系統資訊" asName="d" orderName="id" orderType="desc" width="580" height="400">
+		    <field pyName="id" lgName="系統編號" isSearch="T" type="char" isShow="T" width="80"/>
+		    <field pyName="systemName" lgName="系統名稱" isSearch="T" type="char" isShow="T" width="200" />			    
+		    <field pyName="systemUrl" lgName="系統上下文根" isSearch="T" type="char" isShow="T" width="80"/>		    
+	</table>		
+	<!-- 5部門人員資訊 --> 
+ 	 <table ID="5" pyName="Bmry" lgName="部門人員資訊" asName="d" orderName="id" orderType="desc" width="720" height="400">
+		  <field pyName="ryxx.id" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="bmxx.jgxx.jgjc" lgName="公司簡稱" isSearch="T" type="char" isShow="T" width="120" /> 
+		  <field pyName="bmxx.bmmc" lgName="部門名稱" isSearch="T" type="char" isShow="T" width="100" /> 
+		  <field pyName="ryxx.rybh" lgName="人員編號" isSearch="T" type="char" isShow="T" width="100" /> 
+		  <field pyName="ryxx.name" lgName="姓名" isSearch="T" type="char" isShow="T" width="60" /> 
+		  <field pyName="ryxx.zc" lgName="職稱" isSearch="T" type="char" isShow="T" width="80" /> 
+		  <field pyName="ryxx.level" lgName="人員級別" isSearch="T" type="select" isShow="T" width="60" value="1:一般;2:中級;3:高級"/>		  
+		  <field pyName="ryxx.sex" lgName="性別" isSearch="T" type="select" isShow="T" width="30" value="0:女;1:男" /> 
+		  <field pyName="ryxx.idNum" lgName="證件號碼" isSearch="T" type="char" isShow="F" /> 
+		  <field pyName="ryxx.dateOfBirth" lgName="出生日期" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="ryxx.nation" lgName="民族" isSearch="F" type="char" isShow="F"/> 
+		  <field pyName="ryxx.jg" lgName="籍貫" isSearch="F" type="char" isShow="F"/> 
+		  <field pyName="ryxx.married" lgName="婚否" isSearch="T" type="select" isShow="T" width="30" value="0:未婚;1:已婚" /> 
+		  <field pyName="ryxx.bloodType" lgName="血型" isSearch="T" type="char" isShow="F" /> 
+		  <field pyName="ryxx.byyx" lgName="畢業院校" isSearch="T" type="char" isShow="F" /> 
+		  <field pyName="ryxx.zgxl" lgName="最高學歷" isSearch="T" type="char" isShow="F" /> 
+		  <field pyName="ryxx.zy" lgName="專業" isSearch="T" type="char" isShow="F" /> 
+		  <field pyName="ryxx.homeTel" lgName="家庭電話" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="ryxx.mobile" lgName="手機" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="ryxx.email" lgName="電子郵件" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="ryxx.qq" lgName="qq" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="ryxx.postcode" lgName="郵遞區號" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="ryxx.address" lgName="地址" isSearch="F" type="char" isShow="F" /> 
+		  <field pyName="ryxx.aihao" lgName="愛好" isSearch="F" type="char" isShow="F" /> 
+ 	 </table>
+	<!-- 6角色信息 --> 
+	  <table ID="6" pyName="Role" lgName="角色信息" asName="d" orderName="id" orderType="desc" width="400" height="400">
+			  <field pyName="id" isSearch="F" type="char" isShow="F" />
+			   <field pyName="roleCode" lgName="角色編號" isSearch="T" type="char" isShow="T" width="60" />		
+			    <field pyName="roleName" lgName="角色名稱" isSearch="T" type="char" isShow="T" width="150" />
+			    <field pyName="memo" lgName="備註" isSearch="T" type="char" isShow="T" width="190" />		 
+	  </table> 
+</tables>

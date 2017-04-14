@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
+		
+	<description>Root ApplicationContext</description>
+	<!-- Root Context: defines shared resources visible to all other web components -->
+			
+	<!-- 系统参数 -->
+	<util:properties id="appProperties" location="classpath:META-INF/appContext.properties" />
+	<context:property-placeholder properties-ref="appProperties" />		
+	
+	<!-- spring security多语言文件 -->
+	<bean id="messageSource" 
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames" value="classpath:META-INF/messages/i18n/sec_messages"/>
+		<!-- 没有找到key对应的多语言信息，属性为false抛出异常，为true返回key值 -->
+		<property name="fallbackToSystemLocale" value="false"/>
+	</bean>	
+	
+	<security:global-method-security pre-post-annotations="enabled"/>	
+	<security:http pattern="/" security="none"/>
+	<security:http pattern="/login" security="none"/>
+	<security:http pattern="/resources/**" security="none"/>		
+	<security:http>		
+		<security:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />		
+		<security:form-login login-page='/login' login-processing-url="/syslogin" authentication-failure-url="/login?error" 
+			always-use-default-target="true" default-target-url="/main"/>
+		<security:logout logout-success-url="/login?logout" logout-url="/logout"
+			invalidate-session="true" delete-cookies="JSESSIONID" />
+		<!-- 停用CSRF，默认是开启的 -->
+		<security:csrf disabled="true"/> 
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<!-- 用户名密码保持在数据库 -->
+			<security:jdbc-user-service data-source-ref="dataSource" 
+				users-by-username-query="select username, password, enabled from t_administrator where username = ?"
+				authorities-by-username-query="select username, rolename from t_administrator where username = ?"				
+			/>		
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>		
+		</security:authentication-provider>		
+	</security:authentication-manager>
+	
+	<!-- 启用security debug -->
+	<security:debug/>
+	
+	<!-- 密码加密类 -->
+	<bean id="passwordEncoder" xmlns="http://www.springframework.org/schema/beans"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">		
+		<!-- <constructor-arg value="16"/> -->
+	</bean>
+	
+	<!--  -->		
+	<context:annotation-config />	  
+	  
+  	<!-- 数据源，使用wildfly中的jndi得到 -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:jboss/xads/chpl" />
+	</bean>
+
+	<!-- jpa工厂bean -->
+	<bean id="emf"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<!-- 这里设置的数据源会代替persistence.xml中jta-data-source的设置 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 定义domain扫描包，这样不需要在persistence.xml中定义每个class -->
+		<property name="packagesToScan" value="com.yourhealth.*.domain,com.yourhealth.*.*.domain,com.yourhealth.*.*.*.domain"/>
+		<!-- 指定Jpa持久化实现厂商类,这里是Hibernate -->
+        <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>				
+		<!-- 指定JPA属性；如Hibernate中指定是否显示SQL的是否显示、方言等 -->
+        <property name="jpaProperties">
+            <props>
+            	<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+            	<prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                 <!-- <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop> -->                
+            </props>
+        </property>		
+	</bean>
+	
+	<!-- Hibernate对Jpa的实现 -->
+    <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>	
+
+	<!-- @PersistenceContext -->
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<!-- JPA必须在事务环境下才能有效 -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="emf" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+  	<context:component-scan base-package="com.yourhealth.*.dao.impl, com.yourhealth.*.service.impl"/>  
+  	
+  	<jpa:repositories base-package="com.yourhealth.*.dao" 
+  		entity-manager-factory-ref="emf" 
+ 		transaction-manager-ref="transactionManager"
+  	></jpa:repositories>	
+  	  	  		
+</beans>
