@@ -69,6 +69,7 @@ function t_b_height_rownum(){
 }
 
 //列表刷新装载完成前事件，此处作权限及SESSION失效提示
+//后面将没有权限、session失效等统一进行异常处理，zzm
 function beforeProcessingFunc(data,st,xhr){ 
 	//data就是xhr.responseText的json格式数据，  var res=$.parseJSON(xhr.responseText); 
 	return authorization(data);
@@ -198,9 +199,10 @@ function editBeforeSubmitFunc(postdata,formid){
 var iColWithError=[];//记录error栏位
 
 //编辑页面前台验证,此处采用替换原方法，以实现将出错信息对应到相应栏位上
+//保留checkValues值
+var originalCheckValues = $.jgrid.checkValues;
 //？
-var originalCheckValues=$.jgrid.checkValues;
-$.jgrid.checkValues=function(val,valref,customobject,nam){
+$.jgrid.checkValues = function(val, valref, customobject, nam){
 	var ret=originalCheckValues.call(this,val,valref,customobject,name); 
 	//$('.DataTD .ui-jqgrid-error-text').remove(); 
 	for(var i=0;i<iColWithError.length;i++){
@@ -220,6 +222,7 @@ $.jgrid.checkValues=function(val,valref,customobject,nam){
 	return ret;
 };
 
+//？
 $.jgrid.checkValues_=function(val,valref,focusflag,customobject,nam){
 	var ret=originalCheckValues.call(this,val,valref,customobject,name);  
 	var checkfield=".DataTD #"+valref.replace(/\./g,"\\\.");  
@@ -242,12 +245,12 @@ function editAfterSubmitFunc(response,postdata,frmoper){
 	$errorTr=$("#TblGrid_"+$.jgrid.jqID(this.id)+">tbody>tr#FormError");
 	$errorTd=$errorTr.children("td.ui-state-error");
 	
-	if($.trim(response.responseText).substr(0,6)=="<html>"){ 
+	if($.trim(response.responseText).substr(0,6)=="<html>"){ //统一异常处理，这里以后可以去掉
 		top.location="login";
 	}else{
 		var res=$.parseJSON(response.responseText);
 		if(!authorization(res)) {
-			$errorTd.hide();//$errorTd.removeClass("ui-state-error");//将编辑窗中的提示部分去掉（因为authorization已经会弹出提示），如果需要，将此句去掉
+			$errorTd.hide(); //将编辑窗中的提示部分去掉（因为authorization已经会弹出提示），如果需要，将此句去掉
 			return [false,res.message,""];    
 		}
 		for(var i=0;i<iColWithError.length;i++){			
@@ -258,30 +261,23 @@ function editAfterSubmitFunc(response,postdata,frmoper){
 			var successinfo='<span class="ui-icon ui-icon-info" style="float:left;margin-right:.3em;"></span>'+res.message;
 			$infoTd.html(successinfo); 
 			$infoTr.show();
-			getRecordIdAfterEdit(this.id,res,frmoper); 
-			return [true,"",res.key_id]; 
+			getRecordIdAfterEdit(this.id, res, frmoper); 
+			return [true, "", res.key_id]; 
 	    }else{ 
-	    	//$(".ui-jqgrid-error-text").remove();这样不用循环也可删除LABEL  
-		    iColWithError=[];
+	    	iColWithError=[];
 		    var errorinfo=$.jgrid.errors.errcap;
 		    if($.isArray(res.message)){ //判断是否为数组
-			   	//var message="";
 			   	for(var i=0;i<res.message.length;i++){
-			    	//var fieldtitle=$("#TblGrid_"+$.jgrid.jqID(this.id)+">tbody>tr#tr_"+res.message[i].field+">td.CaptionTD").text();
-			    	//message+=fieldtitle+':'+res.message[i]['defaultMessage']+'<br/>'; 
 			    	var checkfield=".DataTD #"+res.message[i].field.replace(/\./g,"\\\.");  
 					iColWithError[iColWithError.length++]=checkfield;
 					$(checkfield).parent().append("<label class='ui-jqgrid-error-text'>"+res.message[i]['defaultMessage']+"</label>"); //ret[1].split(":")[1]
-					$(checkfield).addClass("ui-state-error"); 
-					//var selector=".DataTD #"+res.message[i].field;
-			    	//$(selector).after("<img title='"+res.message[i]['defaultMessage']+"' class='jqgrid-error-icon' src='resources/image/...png'></img>");
+					$(checkfield).addClass("ui-state-error"); 					
 			    }
-			   	//errorinfo='<span class="ui-icon ui-icon-alert" style="float:left;margin-right:.3em;"></span>'+message;
 		    }else{
-		    	errorinfo=res.message;
+		    	errorinfo = res.message;
 		    }
-	        // $infoTr.hide();     
-	        return [false,errorinfo,""];  
+		    $errorTd.hide(); 
+	        return [false, errorinfo, ""];  
     	}
 	} 
  };
@@ -292,38 +288,29 @@ function editAfterSubmitFunc(response,postdata,frmoper){
  
  //删除提交后事件
  function delAfterSubmitFunc(response,postdata,frmoper){
-	//$deldataTr=$(".DelTable>tbody>tr#DelData");
-	//$deldataTd=$infoTr.children("td");  //存有ID
-	//$delmsg=$(".DelTable>tbody td.delmsg");
-	//response.status
 	$errorTr=$("#DelTbl_"+$.jgrid.jqID(this.id)+">table.DelTable>tbody>tr#DelError");
 	$errorTd=$errorTr.children("td.ui-state-error");
 	var res=$.parseJSON(response.responseText);
 		
 	if(!authorization(res)) {
-		$errorTd.hide();//$errorTd.removeClass("ui-state-error");
+		$errorTd.hide();
 		return  [false,res.message,""];
 	}
-	if(res.success){//<div class="ui-state-highlight ui-corner-all"> 
+	if(res.success){ 
        return [true,"",res.key_id]; 
     }else{ 
        var errorinfo=res.message; 
-       //  $deldataTr.hide();     
        return [false,errorinfo,""];      
 	} 
  }		
 	 
 //jgGrid功能按钮位置调整在上方
 function jqGridButton(listObjId,paperObjId,flag){
-	//var searchtable="<table border='0' cellspacing='0' cellpadding='0' style='table-layout:auto;'><tr><td><input type='text' class='input-elm' size='20' role='textbox'></input></td>" +
-	//"<td><a id='fbox_toplist_search' class='fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset'>" +
-	//"<span class='ui-icon ui-icon-search'></span>查找</a></td></tr></table>";  
 	var topPagerDiv=$('#'+listObjId+'_toppager')[0];
 	$("#"+listObjId+"_toppager_center",topPagerDiv).remove();
 	$('#'+listObjId+'_toppager_left',topPagerDiv).parents(".ui-pg-table").css('table-layout','auto');
 	if(flag){ 
 		$(".ui-paging-info",topPagerDiv).remove();//right中内容删除  
-		//$('#'+listObjId+'_toppager_left',topPagerDiv).width($('#'+listObjId+'_toppager .ui-pg-table').width());
 		$('#'+listObjId+'_toppager_right',topPagerDiv).remove; 
 	}else{ 
 		//模糊查询
@@ -1127,8 +1114,7 @@ function dialog_treegrid(opt){
 	 var buts=[{id:idprefix+'_ok_button',
 			text:$.tysel.bSubmit,
 			onClick:function(){ 
-				var rowids=$("#"+idprefix+"_list").jqGrid('getDataIDs'),l=rowids.length; 
-				 
+				var rowids=$("#"+idprefix+"_list").jqGrid('getDataIDs'),l=rowids.length; 				 
 				var params={}; 
 				 
 				if($.isFunction(opt.submitparam))	

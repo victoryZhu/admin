@@ -270,6 +270,8 @@ function getRecordIdAfterEdit(objid, res){
             }
 		}
 	  );	 
+
+	 $("#tabs-1").height($("#tabs").height()-40);
 		 
  });	 	 
 </script> 

@@ -22,7 +22,7 @@ var nodes = ${nodes};
 
 $(document).ready(function () {   
   //树载入 
-  //zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, nodes);
+  zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, nodes);
   
   //展开第一个节点，执行有问题！  
   /* var nodes = zTreeObj.getNodes();
@@ -35,7 +35,7 @@ $(document).ready(function () {
   //zTreeObj.expandAll(true);
 
   //$("#div_1").height(20);
-  //$("#div_2").height($(".ui-layout-west").height()-20);
+  $("#div_2").height($(".ui-layout-west").height()-18);
 }); 
 </script> 
 

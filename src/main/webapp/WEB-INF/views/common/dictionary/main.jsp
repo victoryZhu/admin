@@ -209,7 +209,7 @@ function topedit(tableid){
 				    			 
 			} 
 		 ); 
-	     jqGridButton("toplist","toppager"); 
+	     jqGridButton("toplist","toppager",1); 
 	 
 		$("#tabs").tabs( //默认jquery处理显示tab对应的div层，各个div层的内容在之前已经处理好
 		{collapsible:false},  

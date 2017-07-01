@@ -154,46 +154,49 @@ body{
 }*/
 
 /*top部分样式*/
+.ui-layout-north .logo{
+	padding:0px;
+	float:left;
+	width:160px; 
+}
 .ui-layout-north .centerdiv{ 
 	height:46px;
 	line-height:46px;
 	margin:0 280px 0 180px;
 }
- .ui-layout-north .gsinfo{
- 	font-weight:bold;
-	font-size:120%;
-	text-align:center;
- }
 .ui-layout-north .userinfo{
    float:left;
    font-size:75%;
    line-height:20px;   
 }
-.ui-layout-north .logo{
-	padding:0px;
-	float:left;
-	width:180px; 
+.ui-layout-north .gsinfo{
+   font-weight:bold;
+   font-size:120%;
+   text-align:center;
 }
 .ui-layout-north .rightdiv{
   float:right; 
   width:220px; 
+  height:46px;
+  line-height:46px;
+  padding-top: 0px;
+  padding-bottom: 0px;  
 }
-
 .ui-layout-north .toprightmenu{ 
   width:200px;
   padding:0px 10px 10px 10px;
-  background:#294bc4;/*cdd242;*/
-  height:12px;
+  /* background:#294bc4; */
+  height:16px;
   clear:both;
 }
 .ui-layout-north .ry{
-    width:100px;
-    float:left;
-	height:12px; 
-	line-height:12px;
-    font-size:75%;
-    text-align:left;
-    padding-top:5px;
+  width:100px;
+  float:left;
+  height:12px; 
+  line-height:12px;
+  font-size:75%;
+  text-align:left;
+  padding-top:5px;
 }
 .ui-layout-north .langchange{   
   height:12px; 
@@ -209,8 +212,8 @@ body{
 }
 .ui-layout-north ul li{
  	list-style-type:none;
- 	font-size:75%;
- 	color:white;
+ 	font-size:100%;
+ 	color:black;
  	float:left; 
  	height:20px;
  	line-height:20px;
@@ -223,16 +226,15 @@ body{
 	margin:0px;
     padding:0px;
     display:inline;
-	COLOR:#ffffff;
+	COLOR:black;
 	cursor:pointer;
 }
 .ui-layout-north ul li a:hover{ 
-    background-color:#FFFF99;
-    COLOR:#FF0000;
-  } 
+   background-color:#FFFF99;
+   COLOR:#FF0000;
+} 
   
  /*菜单样式*/ 
-
 .menu_accordion .ui-accordion-header {
 	margin-top: 0; 
 }

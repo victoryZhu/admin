@@ -260,6 +260,8 @@ function getRecordIdAfterEdit(objid, res){
             }
 		}
 	  );	 
+
+	 $("#tabs-1").height($("#tabs").height()-40);
 		 
  });	 	 
 </script> 
@@ -273,7 +275,7 @@ function getRecordIdAfterEdit(objid, res){
 		<li><a href="#tabs-1">人员权限</a></li>
 		<li><a href="#tabs-2">人员角色</a></li>					
 	</ul>
-    <div id="tabs-1" style="overflow-y:scroll;height:100%;"> 
+    <div id="tabs-1" style="overflow-y:scroll;"> 
    		<ul id="tree" class="ztree"></ul>		
 	</div>  
 	<div id="tabs-2" > 
