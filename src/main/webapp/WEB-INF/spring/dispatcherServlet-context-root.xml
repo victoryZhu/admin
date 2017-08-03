@@ -60,7 +60,7 @@
 	
 	<bean id="chbcExceptionViewPreparer" class="com.yourhealth.foundation.util.ChbcExceptionViewPreparer"/>
 	
-    <!-- 返回JSP页面 -->
+    <!-- 视图解析器，返回JSP页面 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- 使用JSTL标签 -->

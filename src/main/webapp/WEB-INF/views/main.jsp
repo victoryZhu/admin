@@ -25,7 +25,7 @@ $(document).ready(function () {
 	$('body').layout({ 	
 		north:{
      	  spacing_open:0,
-     	  size:46,
+     	  size:60,
      	  },         
         west:{
       	  spacing_open:8,
@@ -82,7 +82,7 @@ $(document).ready(function () {
 }); 
 </script>
  
-<title>系统管理</title>
+<title>一加健康信息管理平台系统管理</title>
 </head>
 <body>
 	<DIV class="ui-layout-center"></DIV>

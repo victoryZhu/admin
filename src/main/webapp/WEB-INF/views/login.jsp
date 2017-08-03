@@ -12,7 +12,7 @@
 <meta http-equiv="Expires" CONTENT="0">
 <meta http-equiv="Cache-Control" CONTENT="no-cache">
 <meta http-equiv="Pragma" CONTENT="no-cache">
-<title>登录页面</title>
+<title>一加健康信息管理平台系统管理</title>
 <style>
 body {
 	WORD-BREAK: break-all;

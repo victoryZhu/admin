@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>  
+<%--部门人员设置--%>
 
 <!-- 设置编辑权限变量值 -->
 <c:set value="" var="editFlag" ></c:set>
@@ -13,7 +14,7 @@ var cur_bmxxid="";//主档当前ID
 var goto_bmxxid;//修改记录后定位主档ID
 var goto_ryxxid;//修改记录后定位明细ID 
 
-//在jquery.jgGrid.custom.js中调用
+//定位，在jquery.jgGrid.custom.js中调用
 function getRecordIdAfterEdit(objid, res){ 
 	//objid为jqGrid列表的id，res为后台返回的JSON数据	
 	if(objid=="toplist") 
@@ -68,11 +69,11 @@ function ryxxEdit(tableid,frmoper){
 
 	 //明细grid定义			    		 
 	 $("#mxlist").jqGrid({ 
-		 colNames:['','员工编号','用户名', '姓名', '性别','职称','员工状态','邮箱','用户密码','确认密码',''], //表头
+ 	     colNames:['','员工编号','用户名', '姓名', '性别','职称','员工状态','邮箱','用户密码','确认密码',''], //表头
 		 colModel:[ //这里会根据index去解析jsonReader中root对象的属性，填充cell
 		   		 {name:'id', index:'id', key:true, hidden:true, editable:true},
 			     {name:'rybh', index:'rybh', width:60, align:"center", sortable:true, editable:true, editoptions:{size:10}, editrules:{required:true}},  
-			     {name:'username', index:'username', width:60, align:"center", sortable:true, editable:true, editoptions:{size:20}, editrules:{required:true}},         
+			     {name:'username', index:'username', width:60, align:"center", sortable:true, editable:true, editoptions:{size:20}, editrules:{required:true}},        
 			     {name:'name', index:'name', width:60, align:"center", sortable:true, editable:true, editoptions:{size:10}, editrules:{required:true}}, 
 			     {name:'sex', index:'sex', align:"center", width:40, sortable:true, editable:true, editoptions:{value:'M:男;F:女',required:true}, formatter:'select', edittype:'select'},			       	 
 			     {name:'zc', index:'zc', width:100, align:"center", sortable:false, editable:true, editoptions:{size:20}, editrules:{required:true}},

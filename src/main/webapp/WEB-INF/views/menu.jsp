@@ -10,7 +10,7 @@ $(function(){
 	$("#menu_accordion").accordion({ 
 		/*autoheight:false,*/
 		fillSpace:true,   //collapsible:true,
-		heightStyle:"fill", //"auto",//"content",
+		heightStyle:"content", //"auto",//"content",
 		active:0
 		});
 });
